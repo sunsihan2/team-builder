@@ -16,6 +16,7 @@ function App() {
   const addNewTeamMember = (people)=> {
     setTeamMembersList([...teamMembersList, {...people, id: Date.now() }])
   }
+  
 
   return (
     <div className="App">
