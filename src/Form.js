@@ -2,20 +2,38 @@ import React, {useState} from "react"
 
 const Form = (props) => {
 
+    const {addNewTeamMember, teamMembersList, values,change, submit, disabled, errors }= props
     const [people, setPeople] = useState({name: "", email: "", role: ""})
 
     const handleChanges = (event) => {
         const newStateObj = {...people, [event.target.name]: event.target.value}
         setPeople(newStateObj)
+        const {name, value, type, checked} = event.target
+        const valueToUse = type ==="checkbox"? checked: value
+        change(name, valueToUse)
     }
 
     const submitForm = (event) => {
         event.preventDefault();
         props.addNewTeamMember(people)
         setPeople({name: "", email:"", role: ""})
+        submit()
     }
+
     return (
         <form onSubmit = {submitForm}>
+            <h2>Add a team member</h2>
+
+            
+
+            <div className = 'errors'>
+                <div>{errors.name}</div>
+                <div>{errors.email}</div>
+                <div>{errors.role}</div>
+                <div>{errors.password}</div>
+                <div>{errors.terms}</div>
+            </div>
+
             <label htmlFor = "name">Name:</label>
             <input id="name" type= "text"
                 placeholder = "Enter a team member name"
@@ -30,25 +48,26 @@ const Form = (props) => {
                 velue = {people.email}
                 onChange = {handleChanges}/>
 
-<           label htmlFor = "role">Role:</label>
+            <label htmlFor = "role">Role:</label>
             <input id="role" type= "text"
                 placeholder = "Enter a team member role"
                 name= "role"
                 velue = {people.role}
                 onChange = {handleChanges}/>
             
-            <button type = "submit"> Add to the team member list </button>
+            <label htmlFor = "password">Password:</label>
+            <input id="password" type= "text"
+                placeholder = "Enter a password"
+                name= "password"
+                velue = {people.password}
+                onChange = {handleChanges}/>
 
-            <div className = "list">
-                {props.teamMembersList.map(person => (
-                    <div className = "person" key = {person.id}>
-                        <h2>{person.name}</h2>
-                        <p>{person.email}</p>
-                        <p>{person.role}</p>
-                    </div>
-                ))}
-
-            </div>
+            <label> Terms and Conditions
+                <input type="checkbox" name="terms" onChange = {handleChanges} 
+                    checked = {values.terms}/>
+            </label>
+            <button type = "submit" disabled = {disabled} > Add to the team member list </button>
+       
         </form>
     )
 }
