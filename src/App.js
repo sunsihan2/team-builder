@@ -7,6 +7,8 @@ import * as yup from 'yup'
 import schema from './schema'
 import teamMember from './teamMember'
 
+const url = 'https://reqres.in/api/users'
+
 const initialFormValues = {
   name: '',
   email: '',
@@ -25,32 +27,36 @@ export default function App() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [formErrors, setFormErrors] = useState (initialFormValues)
 
+  const handleError = err => {debugger}
+
   const addNewTeamMember = (people)=> {
     setTeamMembersList([...teamMembersList, {...people, id: Date.now() }])
   }
   
+  
+
   const postNewTeamMember = newMember => {
-    axios.post('https://reqres.in/api/users',newMember)
+    axios.post(url, newMember)
       .then(res => {
         setTeamMembersList([...teamMembersList, res.data])
         setFormValues(initialFormValues)
       })
-      .catch(err => {
-        debugger
-        console.log(err)
-      })
+      .catch(handleError)
   }
 
+ 
   const validate = (name, value) => {
     yup
-      .reach(schema.name)
+      .reach(schema, name)
       .validate(value)
+
       .then(valid => {
         setFormValues({
           ...formErrors,
           [name]: ""
         })
       })
+
       .catch(err => {
         setFormValues({
           ...formErrors,
@@ -76,6 +82,8 @@ export default function App() {
     }
     postNewTeamMember(newTeamMember)
   }
+
+
 
   useEffect(() => {
     schema.isValid(formValues)

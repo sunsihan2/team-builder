@@ -56,7 +56,7 @@ const Form = (props) => {
                 onChange = {handleChanges}/>
             
             <label htmlFor = "password">Password:</label>
-            <input id="password" type= "text"
+            <input id="password" type= "password"
                 placeholder = "Enter a password"
                 name= "password"
                 velue = {people.password}
@@ -66,7 +66,7 @@ const Form = (props) => {
                 <input type="checkbox" name="terms" onChange = {handleChanges} 
                     checked = {values.terms}/>
             </label>
-            <button type = "submit" disabled = {disabled} > Add to the team member list </button>
+            <button id = "addBtn" type = "submit" disabled = {disabled} > Add to the team member list </button>
        
         </form>
     )
